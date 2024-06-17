@@ -94,16 +94,14 @@ export function jsonToDocument(
 		return { nullValue: null };
 	} else if (value === null) {
 		return { nullValue: null };
-	} else if (typeof value === 'number' && !Number.isNaN(value)) {
-		if (value.toString().indexOf('.') !== -1) {
-			return { doubleValue: value };
-		} else {
-			return { integerValue: value };
-		}
-	} else if (typeof value === 'string' && /[-T:]/.test(value) && isValidDate(value)) {
-		const date = new Date(Date.parse(value));
-		return { timestampValue: date.toISOString() };
 	} else if (typeof value === 'string') {
+		if (isValidDate(value as string) && !isNaN(Date.parse(value))) {
+				const dateRegexp = /\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[1-2]\d|3[0-1])T(?:[0-1]\d|2[0-3]):[0-5]\d:[0-5]\d\.\d+/;
+				if (dateRegexp.test(value)) {
+						const date = new Date(Date.parse(value as string));
+						return { timestampValue: date.toISOString() };
+				}
+		}
 		return { stringValue: value };
 	} else if (value && value.constructor === Array) {
 		return { arrayValue: { values: value.map((v) => jsonToDocument(v)) } };
@@ -115,6 +113,12 @@ export function jsonToDocument(
 			}
 		}
 		return { mapValue: { fields: obj } };
+	} else if (!isNaN(value as number)) {
+		if (value.toString().indexOf('.') !== -1) {
+			return { doubleValue: value };
+		} else {
+			return { integerValue: value };
+		}
 	}
 
 	return {};
