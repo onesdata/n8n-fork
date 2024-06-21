@@ -56,6 +56,9 @@ const googleServiceAccountScopes = {
 		'https://www.googleapis.com/auth/datastore',
 		'https://www.googleapis.com/auth/firebase',
 	],
+	cloudstorage: [
+		'https://www.googleapis.com/auth/devstorage.read_write',
+	],
 };
 
 type GoogleServiceAccount = keyof typeof googleServiceAccountScopes;
