@@ -55,6 +55,9 @@ const googleServiceAccountScopes = {
 	firestore: [
 		'https://www.googleapis.com/auth/datastore',
 		'https://www.googleapis.com/auth/firebase',
+	],
+	cloudstorage: [
+		'https://www.googleapis.com/auth/devstorage.read_write',
 	]
 };
 
