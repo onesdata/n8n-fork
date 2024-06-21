@@ -58,6 +58,9 @@ const googleServiceAccountScopes = {
 		'https://www.googleapis.com/auth/firebase',
 	],
 	vertex: ['https://www.googleapis.com/auth/cloud-platform'],
+	cloudstorage: [
+		'https://www.googleapis.com/auth/devstorage.read_write',
+	],
 };
 
 type GoogleServiceAccount = keyof typeof googleServiceAccountScopes;
