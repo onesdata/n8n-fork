@@ -20,21 +20,37 @@ export class GoogleCloudStorage implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
-				name: 'googleCloudStorageOAuth2Api',
+				name: 'googleApi',
 				required: true,
-				testedBy: {
-					request: {
-						method: 'GET',
-						url: '/b/',
+				displayOptions: {
+					show: {
+						authentication: ['serviceAccount'],
 					},
 				},
-			},
+			}
 		],
 		requestDefaults: {
 			returnFullResponse: true,
 			baseURL: 'https://storage.googleapis.com/storage/v1',
 		},
 		properties: [
+			{
+				displayName: 'Authentication',
+				name: 'authentication',
+				type: 'options',
+				options: [
+					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
+						name: 'OAuth2 (recommended)',
+						value: 'googleCloudStorageOAuth2Api',
+					},
+					{
+						name: 'Service Account',
+						value: 'serviceAccount',
+					},
+				],
+				default: 'googleCloudStorageOAuth2Api',
+			},
 			{
 				displayName: 'Resource',
 				name: 'resource',
