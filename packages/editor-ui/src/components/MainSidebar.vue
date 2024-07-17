@@ -170,7 +170,7 @@ export default defineComponent({
 			useTemplatesStore,
 		),
 		logoPath(): string {
-			return this.basePath + (this.isCollapsed ? 'static/logo/collapsed.svg' : this.uiStore.logo);
+			return this.basePath + (this.isCollapsed ? `static/logo/collapsed-${this.settingsStore.settings.aitProjectStage}.svg` : this.uiStore.logo);
 		},
 		hasVersionUpdates(): boolean {
 			return (
@@ -434,7 +434,7 @@ export default defineComponent({
 		img {
 			position: relative;
 			left: 1px;
-			height: 20px;
+			max-height: 48px;
 		}
 	}
 

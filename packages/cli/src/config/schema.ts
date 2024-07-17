@@ -300,6 +300,13 @@ export const schema = {
 			env: 'N8N_RELEASE_TYPE',
 		},
 
+		aitProjectStage: {
+			doc: 'Aitana project stage',
+			format: ['prod', 'staging', 'test', 'local'] as const,
+			default: 'local',
+			env: 'AIT_PROJECT_STAGE',
+		},
+
 		gracefulShutdownTimeout: {
 			doc: 'How long should n8n process wait for components to shut down before exiting the process (seconds)',
 			format: Number,
