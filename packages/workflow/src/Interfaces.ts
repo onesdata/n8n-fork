@@ -2634,6 +2634,7 @@ export interface IN8nUISettings {
 	};
 	binaryDataMode: 'default' | 'filesystem' | 's3';
 	releaseChannel: 'stable' | 'beta' | 'nightly' | 'dev';
+	aitProjectStage: 'prod' | 'staging' | 'test' | 'local';
 	n8nMetadata?: {
 		userId?: string;
 		[key: string]: string | number | undefined;
