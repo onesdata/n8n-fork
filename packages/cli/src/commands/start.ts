@@ -134,6 +134,8 @@ export class Start extends BaseCommand {
 		const { staticCacheDir } = this.instanceSettings;
 		const compileFile = async (fileName: string) => {
 			const filePath = path.join(EDITOR_UI_DIST_DIR, fileName);
+			const aitProjectStage = config.getEnv('generic.aitProjectStage');
+
 			if (/(index\.html)|.*\.(js|css)/.test(filePath) && existsSync(filePath)) {
 				const destFile = path.join(staticCacheDir, fileName);
 				await mkdir(path.dirname(destFile), { recursive: true });
@@ -149,6 +151,7 @@ export class Start extends BaseCommand {
 						replaceStream('{{REST_ENDPOINT}}', this.globalConfig.endpoints.rest, {
 							ignoreCase: false,
 						}),
+						replaceStream('{{FAVICON_PATH}}', `/static/favicon-${aitProjectStage}.ico`, { ignoreCase: false }),
 						replaceStream(closingTitleTag, closingTitleTag + scriptsString, {
 							ignoreCase: false,
 						}),
