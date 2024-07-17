@@ -205,11 +205,9 @@ export const useUIStore = defineStore(STORES.UI, () => {
 	});
 
 	const logo = computed(() => {
-		const { releaseChannel } = settingsStore.settings;
+		const { aitProjectStage } = settingsStore.settings;
 		const suffix = appliedTheme.value === 'dark' ? '-dark.svg' : '.svg';
-		return `static/logo/${
-			releaseChannel === 'stable' ? 'expanded' : `channel/${releaseChannel}`
-		}${suffix}`;
+		return `static/logo/stage/${aitProjectStage}${suffix}`;
 	});
 
 	const contextBasedTranslationKeys = computed(() => {
