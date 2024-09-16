@@ -1810,8 +1810,8 @@ export class WorkflowExecute {
 
 		// TODO: Remove the hardcoded default-values here and also in NodeSettings.vue
 		return [
-			Math.min(5, Math.max(2, executionData.node.maxTries || 3)),
-			Math.min(5000, Math.max(0, executionData.node.waitBetweenTries || 1000)),
+			Math.min(100, Math.max(2, executionData.node.maxTries || 3)),
+			Math.min(60000, Math.max(0, executionData.node.waitBetweenTries || 1000)),
 		];
 	}
 
