@@ -5,6 +5,7 @@ import { pipeline } from 'stream/promises';
 import { file as tmpFile } from 'tmp-promise';
 import ftpClient from 'promise-ftp';
 import sftpClient from 'ssh2-sftp-client';
+import { ConnectionOptions, TlsOptions } from 'tls';
 import { BINARY_ENCODING, NodeApiError, NodeConnectionType } from 'n8n-workflow';
 import type {
 	ICredentialDataDecryptedObject,
@@ -430,6 +431,28 @@ export class Ftp implements INodeType {
 					'Whether to return object representing all directories / objects recursively found within SFTP server',
 				required: true,
 			},
+			{
+				displayName: 'Options',
+				displayOptions: {
+					show: {
+						protocol: ['ftps'],
+					},
+				},
+				name: 'options',
+				type: 'collection',
+				placeholder: 'Add Option',
+				default: {},
+				options: [
+					{
+						displayName: 'Reject Unauthorized',
+						name: 'rejectUnauthorized',
+						type: 'boolean',
+						default: false,
+						description:
+							'Whether the server certificate is verified against the list of supplied CAs',
+					},
+				],
+			},
 		],
 	};
 
@@ -447,6 +470,13 @@ export class Ftp implements INodeType {
 						port: credentials.port as number,
 						user: credentials.username as string,
 						password: credentials.password as string,
+						secure: credentials.secure as string | boolean,
+						secureOptions: (credentials.secure
+							? {
+								requestCert: credentials.disableCertificateValidation,
+								rejectUnauthorized: !credentials.disableCertificateValidation,
+							}
+							: undefined) as ConnectionOptions | undefined,
 					});
 				} catch (error) {
 					await ftp.end();
@@ -508,6 +538,7 @@ export class Ftp implements INodeType {
 
 		let credentials: ICredentialDataDecryptedObject | undefined = undefined;
 		const protocol = this.getNodeParameter('protocol', 0) as string;
+		const options = this.getNodeParameter('options', 0, {}) as IDataObject;
 
 		if (protocol === 'sftp') {
 			credentials = await this.getCredentials<ICredentialDataDecryptedObject>('sftp');
@@ -545,6 +576,8 @@ export class Ftp implements INodeType {
 						port: credentials.port as number,
 						user: credentials.username as string,
 						password: credentials.password as string,
+						secure: credentials.secure as boolean,
+						// secureOptions: options || ({} as IDataObject),
 					});
 				}
 			} catch (error) {
