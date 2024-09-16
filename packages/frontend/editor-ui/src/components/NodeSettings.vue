@@ -689,7 +689,7 @@ const populateSettings = () => {
 					type: 'number',
 					typeOptions: {
 						minValue: 2,
-						maxValue: 5,
+						maxValue: 100,
 					},
 					default: 3,
 					displayOptions: {
@@ -706,7 +706,7 @@ const populateSettings = () => {
 					type: 'number',
 					typeOptions: {
 						minValue: 0,
-						maxValue: 5000,
+						maxValue: 60000,
 					},
 					default: 1000,
 					displayOptions: {
