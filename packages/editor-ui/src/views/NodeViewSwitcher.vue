@@ -27,7 +27,7 @@ const nodeViewVersion = useLocalStorage(
 const workflowId = computed<string>(() => route.params.name as string);
 
 const isReadOnlyEnvironment = computed(() => {
-	return sourceControlStore.preferences.branchReadOnly;
+	return sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage;
 });
 
 watch(nodeViewVersion, () => {
