@@ -30,6 +30,7 @@ const props = defineProps<{
 	credentialId?: string;
 }>();
 
+const settingsStore = useSettingsStore();
 const credentialsStore = useCredentialsStore();
 const nodeTypesStore = useNodeTypesStore();
 const uiStore = useUIStore();
@@ -78,7 +79,7 @@ const addCredentialButtonText = computed(() =>
 		: i18n.baseText('credentials.add'),
 );
 
-const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly);
+const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage);
 
 const projectPermissions = computed(() =>
 	getResourcePermissions(
