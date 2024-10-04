@@ -45,6 +45,7 @@ export default defineComponent({
 			useNodeTypesStore,
 			useUIStore,
 			useSourceControlStore,
+			useSettingsStore,
 			useExternalSecretsStore,
 			useProjectsStore,
 		),
@@ -74,7 +75,7 @@ export default defineComponent({
 				: this.$locale.baseText('credentials.add');
 		},
 		readOnlyEnv(): boolean {
-			return this.sourceControlStore.preferences.branchReadOnly;
+			return this.sourceControlStore.preferences.branchReadOnly || this.settingsStore.settings.aitReadOnlyStage;
 		},
 		projectPermissions() {
 			return getResourcePermissions(
