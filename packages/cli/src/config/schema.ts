@@ -188,6 +188,13 @@ export const schema = {
 			env: 'AIT_PROJECT_STAGE',
 		},
 
+		aitReadOnlyStage: {
+			doc: 'Aitana read-only stage',
+			format: Boolean,
+			default: false,
+			env: 'AIT_READ_ONLY_STAGE',
+		},
+
 		gracefulShutdownTimeout: {
 			doc: 'How long should n8n process wait for components to shut down before exiting the process (seconds)',
 			format: Number,

@@ -82,6 +82,7 @@ export function useNodeHelpers() {
 	const i18n = useI18n();
 	const canvasStore = useCanvasStore();
 	const sourceControlStore = useSourceControlStore();
+	const settingsStore = useSettingsStore();
 	const route = useRoute();
 
 	const isInsertingNodes = ref(false);
@@ -1063,7 +1064,7 @@ export function useNodeHelpers() {
 		// Create connections in DOM
 		canvasStore.jsPlumbInstance?.connect({
 			uuids,
-			detachable: !route?.meta?.readOnlyCanvas && !sourceControlStore.preferences.branchReadOnly,
+			detachable: !route?.meta?.readOnlyCanvas && !sourceControlStore.preferences.branchReadOnly && !settingsStore.settings.aitReadOnlyStage,
 		});
 
 		setTimeout(() => {
