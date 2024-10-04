@@ -179,6 +179,7 @@ const workflowMenuItems = computed<ActionDropdownItem[]>(() => {
 				!sourceControlStore.isEnterpriseSourceControlEnabled ||
 				!onWorkflowPage.value ||
 				onExecutionsTab.value ||
+				settingsStore.settings.aitReadOnlyStage ||
 				sourceControlStore.preferences.branchReadOnly,
 		});
 	}
