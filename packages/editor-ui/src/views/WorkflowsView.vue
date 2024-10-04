@@ -66,7 +66,7 @@ const WorkflowsView = defineComponent({
 			usePostHog,
 		),
 		readOnlyEnv(): boolean {
-			return this.sourceControlStore.preferences.branchReadOnly;
+			return this.sourceControlStore.preferences.branchReadOnly || this.settingsStore.settings.aitReadOnlyStage;
 		},
 		currentUser(): IUser {
 			return this.usersStore.currentUser || ({} as IUser);
