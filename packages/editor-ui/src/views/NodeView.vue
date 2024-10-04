@@ -491,7 +491,7 @@ export default defineComponent({
 			return this.workflowsStore.getCurrentWorkflow();
 		},
 		readOnlyEnv(): boolean {
-			return this.sourceControlStore.preferences.branchReadOnly;
+			return this.sourceControlStore.preferences.branchReadOnly || this.settingsStore.settings.aitReadOnlyStage;
 		},
 		isReadOnlyRoute() {
 			return this.$route?.meta?.readOnlyCanvas === true;
