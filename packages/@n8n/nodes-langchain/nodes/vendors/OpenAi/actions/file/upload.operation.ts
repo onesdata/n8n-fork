@@ -29,11 +29,15 @@ const properties: INodeProperties[] = [
 				type: 'options',
 				default: 'assistants',
 				description:
-					"The intended purpose of the uploaded file, the 'Fine-tuning' only supports .jsonl files",
+					"The intended purpose of the uploaded file; 'Batch' and 'Fine-tuning' only support .jsonl files",
 				options: [
 					{
 						name: 'Assistants',
 						value: 'assistants',
+					},
+					{
+						name: 'Batch',
+						value: 'batch',
 					},
 					{
 						name: 'Fine-Tune',
