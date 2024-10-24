@@ -166,7 +166,7 @@ const createBtn = ref<InstanceType<typeof N8nNavigationDropdown>>();
 const isCollapsed = computed(() => uiStore.sidebarMenuCollapsed);
 
 const logoPath = computed(
-	() => basePath.value + (isCollapsed.value ? 'static/logo/collapsed.svg' : uiStore.logo),
+	() => basePath.value + (isCollapsed.value ? `static/logo/collapsed-${settingsStore.settings.aitProjectStage}.svg` : uiStore.logo),
 );
 
 const hasVersionUpdates = computed(
@@ -427,7 +427,7 @@ onClickOutside(createBtn as Ref<VueInstance>, () => {
 		img {
 			position: relative;
 			left: 1px;
-			height: 20px;
+			max-height: 48px;
 		}
 	}
 
