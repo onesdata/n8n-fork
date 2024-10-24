@@ -61,6 +61,7 @@ import { useToast } from '@/composables/useToast';
 import { isEqual, isObject } from 'lodash-es';
 import { useExternalHooks } from '@/composables/useExternalHooks';
 import { useSourceControlStore } from '@/stores/sourceControl.store';
+import { useSettingsStore } from '@/stores/settings.store';
 import { useRootStore } from '@/stores/root.store';
 import RunDataPinButton from '@/components/RunDataPinButton.vue';
 import { getGenericHints } from '@/utils/nodeViewUtils';
@@ -218,6 +219,7 @@ export default defineComponent({
 			useNDVStore,
 			useWorkflowsStore,
 			useSourceControlStore,
+			useSettingsStore,
 			useRootStore,
 		),
 		isReadOnlyRoute() {
@@ -530,7 +532,7 @@ export default defineComponent({
 			return this.paneType === 'output';
 		},
 		readOnlyEnv(): boolean {
-			return this.sourceControlStore.preferences.branchReadOnly;
+			return this.sourceControlStore.preferences.branchReadOnly || this.settingsStore.settings.aitReadOnlyStage;
 		},
 		showIOSearch(): boolean {
 			return this.hasNodeRun && !this.hasRunError && this.unfilteredInputData.length > 0;
