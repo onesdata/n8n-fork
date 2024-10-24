@@ -167,7 +167,7 @@ const mainMenuItems = computed(() => [
 const isCollapsed = computed(() => uiStore.sidebarMenuCollapsed);
 
 const logoPath = computed(
-	() => basePath.value + (isCollapsed.value ? 'static/logo/collapsed.svg' : uiStore.logo),
+	() => basePath.value + (isCollapsed.value ? `static/logo/collapsed-${settingsStore.settings.aitProjectStage}.svg` : uiStore.logo),
 );
 
 const hasVersionUpdates = computed(
@@ -408,7 +408,7 @@ const checkWidthAndAdjustSidebar = async (width: number) => {
 		img {
 			position: relative;
 			left: 1px;
-			height: 20px;
+			max-height: 48px;
 		}
 	}
 
