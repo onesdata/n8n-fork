@@ -110,7 +110,7 @@ export default defineComponent({
 			useWorkflowsEEStore,
 		),
 		readOnlyEnv(): boolean {
-			return this.sourceControlStore.preferences.branchReadOnly;
+			return this.sourceControlStore.preferences.branchReadOnly || this.settingsStore.settings.aitReadOnlyStage;
 		},
 		workflowName(): string {
 			return this.workflowsStore.workflowName;
