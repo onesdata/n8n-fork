@@ -69,7 +69,7 @@ const filters = ref<Filters>({
 });
 const easyAICalloutVisible = ref(true);
 
-const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly);
+const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage);
 const currentUser = computed(() => usersStore.currentUser ?? ({} as IUser));
 const allWorkflows = computed(() => workflowsStore.allWorkflows as IResource[]);
 const isShareable = computed(
