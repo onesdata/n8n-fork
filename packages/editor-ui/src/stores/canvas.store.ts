@@ -42,6 +42,7 @@ import {
 } from '@/utils/nodeViewUtils';
 import type { PointXY } from '@jsplumb/util';
 import { useLoadingService } from '@/composables/useLoadingService';
+import {useSettingsStore} from "@/stores/settings.store";
 
 export const useCanvasStore = defineStore('canvas', () => {
 	const workflowStore = useWorkflowsStore();
@@ -49,6 +50,7 @@ export const useCanvasStore = defineStore('canvas', () => {
 	const uiStore = useUIStore();
 	const historyStore = useHistoryStore();
 	const sourceControlStore = useSourceControlStore();
+	const settingsStore = useSettingsStore();
 	const loadingService = useLoadingService();
 
 	const jsPlumbInstanceRef = ref<BrowserJsPlumbInstance>();
@@ -69,7 +71,7 @@ export const useCanvasStore = defineStore('canvas', () => {
 	const isDemo = ref<boolean>(false);
 	const nodeViewScale = ref<number>(1);
 	const canvasAddButtonPosition = ref<XYPosition>([1, 1]);
-	const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly);
+	const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage);
 	const lastSelectedConnectionComputed = computed<Connection | undefined>(
 		() => lastSelectedConnection.value,
 	);
