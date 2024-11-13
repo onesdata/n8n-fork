@@ -192,8 +192,19 @@ export class ScalingService {
 
 		const jobOptions: JobOptions = {
 			priority,
-			removeOnComplete: true,
-			removeOnFail: true,
+			/**
+			 * From https://docs.bullmq.io/guide/queues/auto-removal-of-jobs#keep-a-certain-number-of-jobs
+			 * Aims to resolve issue where Promise returned by job.finished() never resolves:
+			 * https://github.com/OptimalBits/bull/issues/2504#issuecomment-1364487128
+			 */
+			removeOnComplete: {
+				age: 3600, // keep up to 1 hour
+				count: 10000, // keep up to 10000 jobs
+			},
+			removeOnFail: {
+				age: 24 * 3600, // keep up to 24 hours
+				count: 1000, // keep up to 1000 jobs
+			},
 		};
 
 		const job = await this.queue.add(JOB_TYPE_NAME, jobData, jobOptions);
