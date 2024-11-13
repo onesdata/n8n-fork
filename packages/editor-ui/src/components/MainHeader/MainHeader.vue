@@ -67,7 +67,7 @@ const workflowId = computed(() =>
 	String(router.currentRoute.value.params.name || workflowsStore.workflowId),
 );
 const onWorkflowPage = computed(() => !!(route.meta.nodeView || route.meta.keepWorkflowAlive));
-const readOnly = computed(() => sourceControlStore.preferences.branchReadOnly);
+const readOnly = computed(() => sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage);
 const isEnterprise = computed(
 	() => settingsStore.isQueueModeEnabled && settingsStore.isWorkerViewAvailable,
 );
