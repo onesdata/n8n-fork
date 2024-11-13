@@ -12,6 +12,7 @@ import {
 } from '@/constants';
 import { useI18n } from '@/composables/useI18n';
 import { useNDVStore } from '@/stores/ndv.store';
+import { useSettingsStore } from '@/stores/settings.store';
 import { useSourceControlStore } from '@/stores/sourceControl.store';
 import { useUIStore } from '@/stores/ui.store';
 import { useWorkflowsStore } from '@/stores/workflows.store';
@@ -25,6 +26,7 @@ const route = useRoute();
 const locale = useI18n();
 const pushConnection = usePushConnection({ router });
 const ndvStore = useNDVStore();
+const settingsStore = useSettingsStore();
 const uiStore = useUIStore();
 const sourceControlStore = useSourceControlStore();
 const workflowsStore = useWorkflowsStore();
@@ -49,7 +51,7 @@ const workflowId = computed(() =>
 	String(router.currentRoute.value.params.name || workflowsStore.workflowId),
 );
 const onWorkflowPage = computed(() => !!(route.meta.nodeView || route.meta.keepWorkflowAlive));
-const readOnly = computed(() => sourceControlStore.preferences.branchReadOnly);
+const readOnly = computed(() => sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage);
 
 watch(route, (to, from) => {
 	syncTabsWithRoute(to, from);

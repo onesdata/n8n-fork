@@ -54,6 +54,7 @@ import { useNDVStore } from '@/stores/ndv.store';
 import { useNodeTypesStore } from '@/stores/nodeTypes.store';
 import { useRootStore } from '@/stores/root.store';
 import { useSourceControlStore } from '@/stores/sourceControl.store';
+import { useSettingsStore } from "@/stores/settings.store";
 import { useWorkflowsStore } from '@/stores/workflows.store';
 import { executionDataToJson } from '@/utils/nodeTypesUtils';
 import { getGenericHints } from '@/utils/nodeViewUtils';
@@ -172,6 +173,7 @@ const nodeTypesStore = useNodeTypesStore();
 const ndvStore = useNDVStore();
 const workflowsStore = useWorkflowsStore();
 const sourceControlStore = useSourceControlStore();
+const settingsStore = useSettingsStore();
 const rootStore = useRootStore();
 
 const toast = useToast();
@@ -196,7 +198,7 @@ const displayMode = computed(() =>
 	props.paneType === 'input' ? ndvStore.inputPanelDisplayMode : ndvStore.outputPanelDisplayMode,
 );
 
-const isReadOnlyRoute = computed(() => route.meta.readOnlyCanvas === true);
+const isReadOnlyRoute = computed(() => route.meta.readOnlyCanvas === true || settingsStore.settings.aitReadOnlyStage);
 const isWaitNodeWaiting = computed(
 	() =>
 		workflowExecution.value?.status === 'waiting' &&
@@ -443,7 +445,7 @@ const editMode = computed(() => {
 const isPaneTypeInput = computed(() => props.paneType === 'input');
 const isPaneTypeOutput = computed(() => props.paneType === 'output');
 
-const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly);
+const readOnlyEnv = computed(() => sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage);
 const showIOSearch = computed(
 	() => hasNodeRun.value && !hasRunError.value && unfilteredInputData.value.length > 0,
 );
