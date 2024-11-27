@@ -133,6 +133,7 @@ const onSelect = (item: IMenuItem): void => {
 	flex-direction: column;
 	background-color: var(--menu-background, var(--color-background-xlight));
 	overflow: hidden;
+	margin-top: 15px;
 }
 
 .menuHeader {
