@@ -11,6 +11,7 @@ import { useI18n } from './useI18n';
 import { usePinnedData } from './usePinnedData';
 import { isPresent } from '../utils/typesUtils';
 import { getResourcePermissions } from '@/permissions';
+import { useSettingsStore } from "@/stores/settings.store";
 
 export type ContextMenuTarget =
 	| { source: 'canvas'; nodeIds: string[] }
@@ -44,6 +45,7 @@ export const useContextMenu = (onAction: ContextMenuActionCallback = () => {}) =
 	const nodeTypesStore = useNodeTypesStore();
 	const workflowsStore = useWorkflowsStore();
 	const sourceControlStore = useSourceControlStore();
+	const settingsStore = useSettingsStore();
 
 	const i18n = useI18n();
 
@@ -54,6 +56,7 @@ export const useContextMenu = (onAction: ContextMenuActionCallback = () => {}) =
 	const isReadOnly = computed(
 		() =>
 			sourceControlStore.preferences.branchReadOnly ||
+			settingsStore.settings.aitReadOnlyStage ||
 			uiStore.isReadOnlyView ||
 			!workflowPermissions.value.update,
 	);
