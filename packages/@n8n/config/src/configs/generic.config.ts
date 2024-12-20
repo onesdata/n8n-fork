@@ -12,6 +12,9 @@ export class GenericConfig {
 	@Env('AIT_PROJECT_STAGE')
 	aitProjectStage: 'prod' | 'staging' | 'test' | 'local' = 'local';
 
+	@Env('AIT_READ_ONLY_STAGE')
+	aitReadOnlyStage: boolean = false;
+
 	/** Grace period (in seconds) to wait for components to shut down before process exit. */
 	@Env('N8N_GRACEFUL_SHUTDOWN_TIMEOUT')
 	gracefulShutdownTimeout: number = 30;
