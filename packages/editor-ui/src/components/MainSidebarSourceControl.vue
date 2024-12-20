@@ -6,6 +6,7 @@ import { hasPermission } from '@/utils/rbac/permissions';
 import { useToast } from '@/composables/useToast';
 import { useLoadingService } from '@/composables/useLoadingService';
 import { useUIStore } from '@/stores/ui.store';
+import { useSettingsStore } from '@/stores/settings.store';
 import { useSourceControlStore } from '@/stores/sourceControl.store';
 import { SOURCE_CONTROL_PULL_MODAL_KEY, SOURCE_CONTROL_PUSH_MODAL_KEY } from '@/constants';
 import type { SourceControlAggregatedFile } from '@/types/sourceControl.types';
@@ -21,6 +22,7 @@ const responseStatuses = {
 
 const loadingService = useLoadingService();
 const uiStore = useUIStore();
+const settingsStore = useSettingsStore();
 const sourceControlStore = useSourceControlStore();
 const toast = useToast();
 const i18n = useI18n();
@@ -157,7 +159,7 @@ async function pullWorkfolder() {
 					<n8n-button
 						:class="{
 							'mr-2xs': !isCollapsed,
-							'mb-2xs': isCollapsed && !sourceControlStore.preferences.branchReadOnly,
+							'mb-2xs': isCollapsed && !sourceControlStore.preferences.branchReadOnly && !settingsStore.settings.aitReadOnlyStage,
 						}"
 						icon="arrow-down"
 						type="tertiary"
@@ -168,7 +170,7 @@ async function pullWorkfolder() {
 					/>
 				</n8n-tooltip>
 				<n8n-tooltip
-					v-if="!sourceControlStore.preferences.branchReadOnly"
+					v-if="!sourceControlStore.preferences.branchReadOnly && !settingsStore.settings.aitReadOnlyStage"
 					:disabled="!isCollapsed"
 					:show-after="tooltipOpenDelay"
 					placement="right"

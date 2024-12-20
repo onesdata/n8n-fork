@@ -22,7 +22,7 @@ const { nodeViewVersion, migrateToNewNodeViewVersion } = useNodeViewVersionSwitc
 const workflowId = computed<string>(() => route.params.name as string);
 
 const isReadOnlyEnvironment = computed(() => {
-	return sourceControlStore.preferences.branchReadOnly;
+	return sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage;
 });
 
 onMounted(() => {
