@@ -106,6 +106,7 @@ export class FrontendService {
 				secure: config.getEnv('secure_cookie'),
 			},
 			releaseChannel: this.globalConfig.generic.releaseChannel,
+			aitProjectStage: this.globalConfig.generic.aitProjectStage,
 			oauthCallbackUrls: {
 				oauth1: `${instanceBaseUrl}/${restEndpoint}/oauth1-credential/callback`,
 				oauth2: `${instanceBaseUrl}/${restEndpoint}/oauth2-credential/callback`,
