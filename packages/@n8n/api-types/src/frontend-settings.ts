@@ -97,6 +97,7 @@ export interface FrontendSettings {
 	};
 	binaryDataMode: 'default' | 'filesystem' | 's3' | 'database';
 	releaseChannel: 'stable' | 'beta' | 'nightly' | 'dev' | 'rc';
+	aitProjectStage: 'prod' | 'staging' | 'test' | 'local';
 	n8nMetadata?: {
 		userId?: string;
 		[key: string]: string | number | undefined;
