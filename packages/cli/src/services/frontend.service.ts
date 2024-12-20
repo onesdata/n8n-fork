@@ -108,6 +108,7 @@ export class FrontendService {
 			},
 			releaseChannel: this.globalConfig.generic.releaseChannel,
 			aitProjectStage: this.globalConfig.generic.aitProjectStage,
+			aitReadOnlyStage: this.globalConfig.generic.aitReadOnlyStage,
 			oauthCallbackUrls: {
 				oauth1: `${instanceBaseUrl}/${restEndpoint}/oauth1-credential/callback`,
 				oauth2: `${instanceBaseUrl}/${restEndpoint}/oauth2-credential/callback`,
