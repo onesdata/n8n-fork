@@ -15,6 +15,9 @@ export class GenericConfig {
 	@Env('N8N_RELEASE_TYPE', releaseChannelSchema)
 	releaseChannel: ReleaseChannel = 'dev';
 
+	@Env('AIT_PROJECT_STAGE')
+	aitProjectStage: 'prod' | 'staging' | 'test' | 'local' = 'local';
+
 	/** Seconds to wait for graceful shutdown (for example, finishing executions) before the process exits. */
 	@Env('N8N_GRACEFUL_SHUTDOWN_TIMEOUT')
 	gracefulShutdownTimeout: number = 30;
