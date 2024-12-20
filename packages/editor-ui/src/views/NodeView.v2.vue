@@ -230,7 +230,7 @@ const isWorkflowRoute = computed(() => !!route?.meta?.nodeView || isDemoRoute.va
 const isDemoRoute = computed(() => route.name === VIEWS.DEMO);
 const isReadOnlyRoute = computed(() => !!route?.meta?.readOnlyCanvas);
 const isReadOnlyEnvironment = computed(() => {
-	return sourceControlStore.preferences.branchReadOnly;
+	return sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage;
 });
 
 const isCanvasReadOnly = computed(() => {
