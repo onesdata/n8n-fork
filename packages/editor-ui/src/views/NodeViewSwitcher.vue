@@ -5,11 +5,13 @@ import NodeViewV1 from '@/views/NodeView.vue';
 import NodeViewV2 from '@/views/NodeView.v2.vue';
 import { getNodeViewTab } from '@/utils/canvasUtils';
 import { MAIN_HEADER_TABS, PLACEHOLDER_EMPTY_WORKFLOW_ID, VIEWS } from '@/constants';
+import { useSettingsStore } from '@/stores/settings.store';
 import { useWorkflowsStore } from '@/stores/workflows.store';
 import { useWorkflowHelpers } from '@/composables/useWorkflowHelpers';
 import { useSourceControlStore } from '@/stores/sourceControl.store';
 import { useNodeViewVersionSwitcher } from '@/composables/useNodeViewVersionSwitcher';
 
+const settingsStore = useSettingsStore();
 const workflowsStore = useWorkflowsStore();
 const sourceControlStore = useSourceControlStore();
 
@@ -22,7 +24,7 @@ const { nodeViewVersion, migrateToNewNodeViewVersion } = useNodeViewVersionSwitc
 const workflowId = computed<string>(() => route.params.name as string);
 
 const isReadOnlyEnvironment = computed(() => {
-	return sourceControlStore.preferences.branchReadOnly;
+	return sourceControlStore.preferences.branchReadOnly || settingsStore.settings.aitReadOnlyStage;
 });
 
 onMounted(() => {
