@@ -986,5 +986,8 @@
     "xml2js": "catalog:",
     "xmlhttprequest-ssl": "3.1.0"
   },
-  "license": "LicenseRef-n8n-sustainable-use"
+  "license": "LicenseRef-n8n-sustainable-use",
+  "overrides": {
+    "@icetee/ftp": "^1.0.8"
+  }
 }
