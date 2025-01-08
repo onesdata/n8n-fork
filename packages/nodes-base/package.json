@@ -1026,5 +1026,8 @@
     "xml2js": "catalog:",
     "zod": "catalog:"
   },
-  "license": "LicenseRef-n8n-sustainable-use"
+  "license": "LicenseRef-n8n-sustainable-use",
+  "overrides": {
+    "@icetee/ftp": "^1.0.8"
+  }
 }
