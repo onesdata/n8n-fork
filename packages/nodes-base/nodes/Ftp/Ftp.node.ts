@@ -18,6 +18,7 @@ import sftpClient from 'ssh2-sftp-client';
 import type { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
 import { file as tmpFile } from 'tmp-promise';
+import { ConnectionOptions } from 'tls';
 
 import { formatPrivateKey, generatePairedItemData } from '@utils/utilities';
 
@@ -474,6 +475,28 @@ export class Ftp implements INodeType {
 					'Whether to return object representing all directories / objects recursively found within SFTP server',
 				required: true,
 			},
+			{
+				displayName: 'Options',
+				displayOptions: {
+					show: {
+						protocol: ['ftps'],
+					},
+				},
+				name: 'options',
+				type: 'collection',
+				placeholder: 'Add Option',
+				default: {},
+				options: [
+					{
+						displayName: 'Reject Unauthorized',
+						name: 'rejectUnauthorized',
+						type: 'boolean',
+						default: false,
+						description:
+							'Whether the server certificate is verified against the list of supplied CAs',
+					},
+				],
+			},
 		],
 	};
 
@@ -491,6 +514,13 @@ export class Ftp implements INodeType {
 						port: credentials.port as number,
 						user: credentials.username as string,
 						password: credentials.password as string,
+						secure: credentials.secure as string | boolean,
+						secureOptions: (credentials.secure
+							? {
+								requestCert: credentials.disableCertificateValidation,
+								rejectUnauthorized: !credentials.disableCertificateValidation,
+							}
+							: undefined) as ConnectionOptions | undefined,
 					});
 				} catch (error) {
 					await ftp.end();
@@ -597,6 +627,7 @@ export class Ftp implements INodeType {
 						port: credentials.port as number,
 						user: credentials.username as string,
 						password: credentials.password as string,
+						secure: credentials.secure as boolean,
 					});
 				}
 			} catch (error) {
