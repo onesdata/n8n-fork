@@ -1016,5 +1016,8 @@
     "xmlhttprequest-ssl": "3.1.0",
     "zod": "catalog:"
   },
-  "license": "LicenseRef-n8n-sustainable-use"
+  "license": "LicenseRef-n8n-sustainable-use",
+  "overrides": {
+    "@icetee/ftp": "^1.0.8"
+  }
 }
