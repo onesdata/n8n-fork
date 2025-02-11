@@ -450,6 +450,35 @@ const sharedOperations: INodeProperties[] = [
 				},
 			},
 			{
+				displayName: 'Reasoning Effort',
+				name: 'reasoning_effort',
+				type: 'options',
+				noDataExpression: true,
+				description:
+					'Constrains effort on reasoning for reasoning models. Currently, only supported models are o1 and o3-mini. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.',
+				options: [
+					{
+						name: 'low',
+						value: 'low',
+					},
+					{
+						name: 'medium',
+						value: 'medium',
+					},
+					{
+						name: 'high',
+						value: 'high',
+					},
+				],
+				routing: {
+					send: {
+						type: 'body',
+						property: 'reasoning_effort',
+					},
+				},
+				default: 'medium',
+			},
+			{
 				displayName: 'Sampling Temperature',
 				name: 'temperature',
 				default: 1,

@@ -156,6 +156,29 @@ const properties: INodeProperties[] = [
 				type: 'number',
 			},
 			{
+				displayName: 'Reasoning Effort',
+				name: 'reasoning_effort',
+				type: 'options',
+				noDataExpression: true,
+				description:
+					'Constrains effort on reasoning for reasoning models. Currently, only supported models are o1 and o3-mini. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.',
+				options: [
+					{
+						name: 'low',
+						value: 'low',
+					},
+					{
+						name: 'medium',
+						value: 'medium',
+					},
+					{
+						name: 'high',
+						value: 'high',
+					},
+				],
+				default: 'medium',
+			},
+			{
 				displayName: 'Output Randomness (Temperature)',
 				name: 'temperature',
 				default: 1,

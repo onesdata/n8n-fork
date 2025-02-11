@@ -1,5 +1,6 @@
 /* eslint-disable n8n-nodes-base/node-dirname-against-convention */
 import { OpenAI, type ClientOptions } from '@langchain/openai';
+import type { OpenAI as OpenAIClient } from "openai";
 import { NodeConnectionType } from 'n8n-workflow';
 import type {
 	INodeType,
@@ -17,6 +18,7 @@ type LmOpenAiOptions = {
 	frequencyPenalty?: number;
 	maxTokens?: number;
 	presencePenalty?: number;
+	reasoningEffort?: OpenAIClient.Chat.ChatCompletionReasoningEffort;
 	temperature?: number;
 	timeout?: number;
 	maxRetries?: number;
@@ -162,6 +164,29 @@ export class LmOpenAi implements INodeType {
 						type: 'number',
 					},
 					{
+						displayName: 'Reasoning Effort',
+						name: 'reasoningEffort',
+						type: 'options',
+						noDataExpression: true,
+						description:
+							'Constrains effort on reasoning for reasoning models. Currently, only supported models are o1 and o3-mini. Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.',
+						options: [
+							{
+								name: 'low',
+								value: 'low',
+							},
+							{
+								name: 'medium',
+								value: 'medium',
+							},
+							{
+								name: 'high',
+								value: 'high',
+							},
+						],
+						default: 'medium',
+					},
+					{
 						displayName: 'Sampling Temperature',
 						name: 'temperature',
 						default: 0.7,
@@ -242,6 +267,7 @@ export class LmOpenAi implements INodeType {
 			frequencyPenalty?: number;
 			maxTokens?: number;
 			presencePenalty?: number;
+			reasoningEffort?: OpenAIClient.Chat.ChatCompletionReasoningEffort;
 			temperature?: number;
 			timeout?: number;
 			maxRetries?: number;
