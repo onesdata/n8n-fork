@@ -1,3 +1,4 @@
+/* eslint-disable n8n-nodes-base/node-dirname-against-convention */
 import { ChatOpenAI, type ClientOptions } from '@langchain/openai';
 import {
 	NodeConnectionTypes,
@@ -6,6 +7,7 @@ import {
 	type ISupplyDataFunctions,
 	type SupplyData,
 } from 'n8n-workflow';
+import type { OpenAI as OpenAIClient } from 'openai';
 
 import { getProxyAgent } from '@utils/httpProxyAgent';
 import { getConnectionHintNoticeField } from '@utils/sharedFields';
@@ -340,9 +342,9 @@ export class LmChatOpenAi implements INodeType {
 			timeout: number;
 			presencePenalty?: number;
 			temperature?: number;
+			reasoningEffort?: OpenAIClient.Chat.ChatCompletionReasoningEffort;
 			topP?: number;
 			responseFormat?: 'text' | 'json_object';
-			reasoningEffort?: 'low' | 'medium' | 'high';
 		};
 
 		const configuration: ClientOptions = {};
@@ -362,11 +364,8 @@ export class LmChatOpenAi implements INodeType {
 		// Extra options to send to OpenAI, that are not directly supported by LangChain
 		const modelKwargs: {
 			response_format?: object;
-			reasoning_effort?: 'low' | 'medium' | 'high';
 		} = {};
 		if (options.responseFormat) modelKwargs.response_format = { type: options.responseFormat };
-		if (options.reasoningEffort && ['low', 'medium', 'high'].includes(options.reasoningEffort))
-			modelKwargs.reasoning_effort = options.reasoningEffort;
 
 		const model = new ChatOpenAI({
 			openAIApiKey: credentials.apiKey as string,
