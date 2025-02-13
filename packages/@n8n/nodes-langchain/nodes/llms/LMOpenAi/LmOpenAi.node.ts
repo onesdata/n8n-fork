@@ -7,6 +7,7 @@ import type {
 	SupplyData,
 	ILoadOptionsFunctions,
 } from 'n8n-workflow';
+import type { OpenAI as OpenAIClient } from 'openai';
 
 import { getProxyAgent } from '@utils/httpProxyAgent';
 
@@ -19,6 +20,7 @@ type LmOpenAiOptions = {
 	maxTokens?: number;
 	presencePenalty?: number;
 	temperature?: number;
+	reasoningEffort?: OpenAIClient.Chat.ChatCompletionReasoningEffort;
 	timeout?: number;
 	maxRetries?: number;
 	topP?: number;
@@ -172,6 +174,38 @@ export class LmOpenAi implements INodeType {
 						type: 'number',
 					},
 					{
+						displayName: 'Reasoning Effort',
+						name: 'reasoningEffort',
+						default: 'medium',
+						description:
+							'Controls the amount of reasoning tokens to use. A value of "low" will favor speed and economical token usage, "high" will favor more complete reasoning at the cost of more tokens generated and slower responses.',
+						type: 'options',
+						options: [
+							{
+								name: 'Low',
+								value: 'low',
+								description: 'Favors speed and economical token usage',
+							},
+							{
+								name: 'Medium',
+								value: 'medium',
+								description: 'Balance between speed and reasoning accuracy',
+							},
+							{
+								name: 'High',
+								value: 'high',
+								description:
+									'Favors more complete reasoning at the cost of more tokens generated and slower responses',
+							},
+						],
+						displayOptions: {
+							show: {
+								// reasoning_effort is only available on o1, o1-versioned, or on o3-mini and beyond. Not on o1-mini or other GPT-models.
+								'/model': [{ _cnd: { regex: '(^o1([-\\d]+)?$)|(^o[3-9].*)' } }],
+							},
+						},
+					},
+					{
 						displayName: 'Timeout',
 						name: 'timeout',
 						default: 60000,
@@ -244,6 +278,7 @@ export class LmOpenAi implements INodeType {
 			maxTokens?: number;
 			presencePenalty?: number;
 			temperature?: number;
+			reasoningEffort?: OpenAIClient.Chat.ChatCompletionReasoningEffort;
 			timeout?: number;
 			maxRetries?: number;
 			topP?: number;
