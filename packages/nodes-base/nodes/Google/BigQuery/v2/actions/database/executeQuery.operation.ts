@@ -223,7 +223,7 @@ export async function execute(this: IExecuteFunctions): Promise<INodeExecutionDa
 	const items = this.getInputData();
 	const length = items.length;
 
-	const returnData: INodeExecutionData[] = [];
+	let returnData: INodeExecutionData[] = [];
 
 	let jobs = [];
 	let maxResults = 1000;
@@ -370,7 +370,7 @@ export async function execute(this: IExecuteFunctions): Promise<INodeExecutionDa
 					}
 				}
 
-				returnData.push(...prepareOutput.call(this, queryResponse, i, raw, includeSchema));
+				returnData = returnData.concat(prepareOutput.call(this, queryResponse, i, raw, includeSchema));
 			} else {
 				jobs.push({ jobId, projectId, i, raw, includeSchema, location });
 			}
@@ -380,7 +380,7 @@ export async function execute(this: IExecuteFunctions): Promise<INodeExecutionDa
 					this.helpers.returnJsonArray({ error: error.message }),
 					{ itemData: { item: i } },
 				);
-				returnData.push(...executionErrorData);
+				returnData = returnData.concat(executionErrorData);
 				continue;
 			}
 			if ((error.message as string).includes('location') || error.httpCode === '404') {
@@ -426,7 +426,7 @@ export async function execute(this: IExecuteFunctions): Promise<INodeExecutionDa
 				if (response.jobComplete) {
 					settledJobs.push(job.jobId);
 
-					returnData.push(...prepareOutput.call(this, response, job.i, job.raw, job.includeSchema));
+					returnData = returnData.concat(prepareOutput.call(this, response, job.i, job.raw, job.includeSchema));
 				}
 				if ((response?.errors as IDataObject[])?.length) {
 					const errorMessages = (response.errors as IDataObject[]).map((error) => error.message);
@@ -444,7 +444,7 @@ export async function execute(this: IExecuteFunctions): Promise<INodeExecutionDa
 						this.helpers.returnJsonArray({ error: error.message }),
 						{ itemData: { item: job.i } },
 					);
-					returnData.push(...executionErrorData);
+					returnData = returnData.concat(executionErrorData);
 					continue;
 				}
 				throw new NodeOperationError(this.getNode(), error as Error, {
