@@ -1,35 +1,45 @@
 <script setup lang="ts">
-import { useFavicon } from '@vueuse/core';
+import type { FrontendSettings } from '@n8n/api-types';
 import { computed, onMounted, useCssModule, useTemplateRef } from 'vue';
+import { useSettingsStore } from '@/stores/settings.store';
+import { useFavicon } from '@vueuse/core';
 
 import LogoIcon from './logo-icon.svg';
 import LogoText from './logo-text.svg';
 
+const settingsStore = useSettingsStore();
+
 const props = defineProps<
 	(
 		| {
-				size: 'large';
+				location: 'authView';
 		  }
 		| {
-				size: 'small';
+				location: 'sidebar';
 				collapsed: boolean;
 		  }
 	) & {
-		releaseChannel?: 'stable' | 'beta' | 'nightly' | 'dev' | 'rc';
+		releaseChannel: FrontendSettings['releaseChannel'];
 	}
 >();
 
-const { size, releaseChannel } = props;
+const { location, releaseChannel } = props;
+const { aitProjectStage } = settingsStore.settings;
+
+const showAitProjectStageTag = computed(() => {
+	if (location === 'authView') return true;
+	return !props.collapsed;
+});
 
 const showLogoText = computed(() => {
-	if (size === 'large') return true;
+	if (location === 'authView') return true;
 	return !props.collapsed;
 });
 
 const $style = useCssModule();
 const containerClasses = computed(() => {
-	if (size === 'large') {
-		return [$style.logoContainer, $style.large];
+	if (location === 'authView') {
+		return [$style.logoContainer, $style.authView];
 	}
 	return [
 		$style.logoContainer,
@@ -40,15 +50,31 @@ const containerClasses = computed(() => {
 
 const svg = useTemplateRef<{ $el: Element }>('logo');
 onMounted(() => {
-	if (!releaseChannel || releaseChannel === 'stable' || !('createObjectURL' in URL)) {
-		return;
-	}
+	if (!('createObjectURL' in URL)) return;
 
 	const logoEl = svg.value!.$el;
 
 	// Change the logo fill color inline, so that favicon can also use it
-	const logoColor = releaseChannel === 'dev' ? '#838383' : '#E9984B';
-	logoEl.querySelector('path')?.setAttribute('fill', logoColor);
+	let logoColor;
+
+	switch (aitProjectStage) {
+		case 'local':
+			logoColor = '#0015ff';
+			break;
+		case 'test':
+			logoColor = '#49d204';
+			break;
+		case 'staging':
+			logoColor = '#fdd404';
+			break;
+		case 'prod':
+			logoColor = '#fa2602';
+			break;
+	}
+
+	if (logoColor) {
+		logoEl.querySelector('path')?.setAttribute('fill', logoColor);
+	}
 
 	// Reuse the SVG as favicon
 	const blob = new Blob([logoEl.outerHTML], { type: 'image/svg+xml' });
@@ -60,6 +86,7 @@ onMounted(() => {
 	<div :class="containerClasses" data-test-id="n8n-logo">
 		<LogoIcon ref="logo" :class="$style.logo" />
 		<LogoText v-if="showLogoText" :class="$style.logoText" />
+		<div v-if="showAitProjectStageTag" :class="$style.aitProjectStageTag">{{ aitProjectStage }}</div>
 		<slot />
 	</div>
 </template>
@@ -78,13 +105,26 @@ onMounted(() => {
 	}
 }
 
-.large {
+.aitProjectStageTag {
+	color: var(--color-text-dark);
+	padding: var(--spacing-5xs) var(--spacing-4xs);
+	background-color: var(--color-background-base);
+	border: 1px solid var(--color-foreground-base);
+	border-radius: var(--border-radius-base);
+	font-size: var(--font-size-3xs);
+	font-weight: var(--font-weight-bold);
+	text-transform: capitalize;
+	line-height: var(--font-line-height-regular);
+	margin: 8px 0 0 3px;
+}
+
+.authView {
 	transform: scale(2);
 	margin-bottom: var(--spacing--xl);
 
 	.logo,
 	.logoText {
-		transform: scale(1.3) translateY(-2px);
+		transform: scale(1.3);
 	}
 
 	.logoText {
@@ -94,7 +134,7 @@ onMounted(() => {
 }
 
 .sidebarExpanded .logo {
-	margin-left: var(--spacing--2xs);
+	margin-left: var(--spacing--3xs);
 }
 
 .sidebarCollapsed .logo {
