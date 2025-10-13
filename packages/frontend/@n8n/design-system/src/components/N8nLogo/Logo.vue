@@ -133,7 +133,7 @@ onMounted(() => {
 	margin: 8px 0 0 3px;
 }
 
-.authView {
+.large {
 	margin-bottom: var(--spacing--xl);
 
 	.logo,
