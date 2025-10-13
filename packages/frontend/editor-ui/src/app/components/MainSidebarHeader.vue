@@ -121,6 +121,7 @@ function handleLinkClick(event: MouseEvent) {
 				size="small"
 				:collapsed="isCollapsed"
 				:release-channel="settingsStore.settings.releaseChannel"
+				:ait-project-stage="settingsStore.settings.aitProjectStage"
 			>
 				<N8nTooltip
 					v-if="sourceControlStore.preferences.branchReadOnly && !isCollapsed"
