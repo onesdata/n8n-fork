@@ -73,6 +73,7 @@ const {
 				size="small"
 				:collapsed="isCollapsed"
 				:release-channel="settingsStore.settings.releaseChannel"
+				:ait-project-stage="settingsStore.settings.aitProjectStage"
 			>
 				<BetaTag v-if="isBeta" :class="$style.beta" data-test-id="beta-icon" />
 				<N8nTooltip
