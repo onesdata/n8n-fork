@@ -114,7 +114,7 @@ onMounted(() => {
 	margin: 8px 0 0 3px;
 }
 
-.authView {
+.large {
 	transform: scale(2);
 	margin-bottom: var(--spacing--xl);
 
