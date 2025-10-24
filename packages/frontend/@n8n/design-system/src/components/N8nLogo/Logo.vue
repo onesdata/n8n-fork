@@ -102,15 +102,15 @@ onMounted(() => {
 }
 
 .aitProjectStageTag {
-	color: var(--color-text-dark);
-	padding: var(--spacing-5xs) var(--spacing-4xs);
-	background-color: var(--color-background-base);
-	border: 1px solid var(--color-foreground-base);
-	border-radius: var(--border-radius-base);
-	font-size: var(--font-size-3xs);
-	font-weight: var(--font-weight-bold);
+	color: var(--color--text--shade-1);
+	padding: var(--spacing--5xs) var(--spacing--4xs);
+	background-color: var(--color--background--shade-1);
+	border: 1px solid var(--color--background--shade-2);
+	border-radius: var(--radius--lg);
+	font-size: var(--font-size--3xs);
+	font-weight: var(--font-weight--bold);
 	text-transform: capitalize;
-	line-height: var(--font-line-height-regular);
+	line-height: var(--line-height--xs);
 	margin: 8px 0 0 3px;
 }
 
