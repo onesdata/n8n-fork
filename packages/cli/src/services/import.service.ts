@@ -90,12 +90,16 @@ export class ImportService {
 		await dbManager.transaction(async (tx) => {
 			for (const workflow of workflows) {
 				if (workflow.active || workflow.activeVersionId) {
-					await this.workflowPublishHistoryRepository.addRecord({
-						workflowId: workflow.id,
-						versionId: workflow.activeVersionId ?? workflow.versionId ?? 'no id found',
-						event: 'deactivated',
-						userId: null,
-					});
+					try {
+						await this.workflowPublishHistoryRepository.addRecord({
+							workflowId: workflow.id,
+							versionId: workflow.activeVersionId ?? workflow.versionId ?? 'no id found',
+							event: 'deactivated',
+							userId: null,
+						});
+					} catch (e) {
+						this.logger.error('Failed to add workflow publish history record', { error: e });
+					}
 
 					workflow.active = false;
 					workflow.activeVersionId = null;
