@@ -17,7 +17,11 @@ export function getTracingConfig(
 		runName: `[${context.getWorkflow().name}] ${context.getNode().name}`,
 		metadata: {
 			execution_id: context.getExecutionId(),
-			workflow: context.getWorkflow(),
+			...Object.fromEntries(
+				Object.entries(context.getWorkflow()).map(
+					([key, value]) => [`workflow_${key}`, value]
+				)
+			),
 			node: context.getNode().name,
 			...(config.additionalMetadata ?? {}),
 		},
