@@ -34,7 +34,16 @@ export class GoogleCloudStorage implements INodeType {
 						authentication: ['serviceAccount'],
 					},
 				},
-			}
+			},
+			{
+				name: 'googleCloudStorageOAuth2Api',
+				required: true,
+				displayOptions: {
+					show: {
+						authentication: ['googleCloudStorageOAuth2Api'],
+					},
+				},
+			},
 		],
 		requestDefaults: {
 			returnFullResponse: true,
