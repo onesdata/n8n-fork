@@ -236,6 +236,11 @@ export const objectOperations: INodeProperties[] = [
 								if (content instanceof Readable) {
 									const bucketName = this.getNodeParameter('bucketName') as string;
 									const objectName = this.getNodeParameter('objectName') as string;
+									const authentication = this.getNodeParameter('authentication') as string;
+									const credentialType =
+										authentication === 'serviceAccount'
+											? 'googleApi'
+											: 'googleCloudStorageOAuth2Api';
 									const uploadHeaders: IDataObject = {
 										...requestOptions.headers,
 										'Content-Type': 'application/json',
@@ -249,7 +254,7 @@ export const objectOperations: INodeProperties[] = [
 									const uploadSessionResponse =
 										await this.helpers.httpRequestWithAuthentication.call(
 											this,
-											'googleCloudStorageOAuth2Api',
+											credentialType,
 											{
 												method: 'POST',
 												url: `/b/${bucketName}/o/`,
