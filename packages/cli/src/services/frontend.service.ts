@@ -307,6 +307,10 @@ export class FrontendService {
 			workflowTagsDisabled: this.globalConfig.tags.disabled,
 			workflowsAutosaveDisabled: this.globalConfig.workflows.autosaveDisabled,
 			useWorkflowPublicationService: this.globalConfig.workflows.useWorkflowPublicationService,
+			workflowUILockTags: {
+				readOnly: this.globalConfig.workflows.uiReadOnlyTag,
+				noExecute: this.globalConfig.workflows.uiNoExecuteTag,
+			},
 			logLevel: this.globalConfig.logging.level,
 			hiringBannerEnabled: this.globalConfig.hiringBanner.enabled,
 			aiAssistant: {
