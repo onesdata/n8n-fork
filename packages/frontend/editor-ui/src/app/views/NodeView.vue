@@ -142,6 +142,7 @@ import { useActivityDetection } from '@/app/composables/useActivityDetection';
 import { useCollaborationStore } from '@/features/collaboration/collaboration/collaboration.store';
 import { useInjectWorkflowId } from '@/app/composables/useInjectWorkflowId';
 import { injectWorkflowDocumentStore } from '@/app/stores/workflowDocument.store';
+import { useWorkflowUILockState } from '@/app/composables/useWorkflowUILockState';
 
 import { N8nCallout, N8nCanvasThinkingPill, N8nCanvasCollaborationPill } from '@n8n/design-system';
 import { useWorkflowHelpers } from '../composables/useWorkflowHelpers';
@@ -306,6 +307,7 @@ const isNDVV2 = computed(() => true);
 // Per-editor host overrides (AI features + read-only). The artifact host marks
 // the canvas read-only while a workflow-builder agent mutates the workflow.
 const { readOnly: externalReadOnly, expandGroups: externalExpandGroups } = useEditorContext();
+const { isReadOnlyByTag, isNonExecutableByTag } = useWorkflowUILockState();
 
 const isCanvasReadOnly = computed(() => {
 	return (
@@ -315,7 +317,8 @@ const isCanvasReadOnly = computed(() => {
 		!(workflowPermissions.value.update ?? projectPermissions.value.workflow.update) ||
 		(workflowDocumentStore?.value?.isArchived ?? false) ||
 		(builderStore.streaming && !builderStore.isHelpStreaming) ||
-		externalReadOnly.value
+		externalReadOnly?.value ||
+		isReadOnlyByTag.value
 	);
 });
 
@@ -330,6 +333,7 @@ const canExecuteOnCanvas = computed(() => {
 	if (workflowDocumentStore?.value?.isArchived) return false;
 	if (builderStore.streaming) return false;
 	if (externalReadOnly?.value) return false;
+	if (isNonExecutableByTag.value) return false;
 	return !!(workflowPermissions.value.execute ?? projectPermissions.value.workflow.execute);
 });
 
@@ -2039,7 +2043,7 @@ onBeforeUnmount(() => {
 				<CanvasRunWorkflowButton
 					v-if="isRunWorkflowButtonVisible"
 					:waiting-for-webhook="isExecutionWaitingForWebhook"
-					:disabled="isExecutionDisabled"
+					:disabled="isExecutionDisabled || !canExecuteOnCanvas"
 					:executing="isWorkflowRunning"
 					:trigger-nodes="triggerNodes"
 					:get-node-type="nodeTypesStore.getNodeType"
