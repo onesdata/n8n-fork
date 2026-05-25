@@ -78,4 +78,18 @@ export class WorkflowsConfig {
 	/** Force-enables groups with several entry and exit nodes. `false` falls back to PostHog. */
 	@Env('N8N_WORKFLOWS_GROUPS_WITH_MANY_BOUNDARIES_ENABLED')
 	groupsWithManyBoundariesEnabled: boolean = false;
+
+	/**
+	 * Name of a tag that, when present on a workflow, makes the editor UI read-only
+	 * (canvas, name and tags in the header). Empty disables the feature.
+	 */
+	@Env('N8N_UI_READONLY_TAG')
+	uiReadOnlyTag: string = '';
+
+	/**
+	 * Name of a tag that, when present on a workflow, disables the manual execute
+	 * button in the editor UI. Empty disables the feature.
+	 */
+	@Env('N8N_UI_NOEXECUTE_TAG')
+	uiNoExecuteTag: string = '';
 }
