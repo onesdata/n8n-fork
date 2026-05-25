@@ -187,6 +187,10 @@ export interface FrontendSettings {
 	 * project its owner works in. Set from `N8N_ENV_FEAT_CRED_SHARING`.
 	 */
 	granularCredentialSharing: boolean;
+	workflowUILockTags: {
+		readOnly: string;
+		noExecute: string;
+	};
 	logLevel: LogLevel;
 	hiringBannerEnabled: boolean;
 	previewMode: boolean;
