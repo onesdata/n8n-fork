@@ -150,6 +150,7 @@ import { useCollaborationStore } from '@/features/collaboration/collaboration/co
 import { useInjectWorkflowId } from '@/app/composables/useInjectWorkflowId';
 import { injectWorkflowDocumentStore } from '@/app/stores/workflowDocument.store';
 import { useUnusableWorkflowCredentials } from '@/features/credentials/composables/useUnusableWorkflowCredentials';
+import { useWorkflowUILockState } from '@/app/composables/useWorkflowUILockState';
 
 import {
 	N8nCallout,
@@ -328,6 +329,7 @@ const {
 	expandGroups: externalExpandGroups,
 	executionButtonType,
 } = useEditorContext();
+const { isReadOnlyByTag, isNonExecutableByTag } = useWorkflowUILockState();
 
 const runWorkflowButtonType = computed(() =>
 	isDemoRoute.value ? 'secondary' : executionButtonType.value,
@@ -341,7 +343,8 @@ const isCanvasReadOnly = computed(() => {
 		!(workflowPermissions.value.update ?? projectPermissions.value.workflow.update) ||
 		(workflowDocumentStore?.value?.isArchived ?? false) ||
 		(builderStore.streaming && !builderStore.isHelpStreaming) ||
-		externalReadOnly.value
+		externalReadOnly?.value ||
+		isReadOnlyByTag.value
 	);
 });
 
@@ -358,6 +361,7 @@ const canExecuteOnCanvas = computed(() => {
 	if (workflowDocumentStore?.value?.isArchived) return false;
 	if (builderStore.streaming) return false;
 	if (externalReadOnly?.value) return false;
+	if (isNonExecutableByTag.value) return false;
 	return !!(workflowPermissions.value.execute ?? projectPermissions.value.workflow.execute);
 });
 
@@ -2258,7 +2262,7 @@ onBeforeUnmount(() => {
 						v-if="isRunWorkflowButtonVisible"
 						:disabled-reason="unusableCredentialReason"
 						:waiting-for-webhook="isExecutionWaitingForWebhook"
-						:disabled="isExecutionDisabled"
+						:disabled="isExecutionDisabled || !canExecuteOnCanvas"
 						:executing="isWorkflowRunning"
 						:trigger-nodes="triggerNodes"
 						:get-node-type="nodeTypesStore.getNodeType"
