@@ -184,6 +184,10 @@ export interface FrontendSettings {
 	workflowsGroupsWithTriggersEnabled: boolean;
 	workflowsGroupsWithManyBoundariesEnabled: boolean;
 	useWorkflowPublicationService: boolean;
+	workflowUILockTags: {
+		readOnly: string;
+		noExecute: string;
+	};
 	logLevel: LogLevel;
 	hiringBannerEnabled: boolean;
 	previewMode: boolean;
