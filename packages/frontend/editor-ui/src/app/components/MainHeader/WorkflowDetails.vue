@@ -35,6 +35,7 @@ import { useUIStore } from '@/app/stores/ui.store';
 import { useWorkflowsStore } from '@/app/stores/workflows.store';
 import { useWorkflowsListStore } from '@/app/stores/workflowsList.store';
 import { WorkflowDocumentStoreKey } from '@/app/constants/injectionKeys';
+import { useWorkflowUILockState } from '@/app/composables/useWorkflowUILockState';
 
 const props = defineProps<{
 	id: IWorkflowDb['id'];
@@ -80,9 +81,16 @@ const readOnly = computed(
 	() => sourceControlStore.preferences.branchReadOnly || collaborationStore.shouldBeReadOnly,
 );
 
+const { isReadOnlyByTag } = useWorkflowUILockState();
+
 const readOnlyActions = computed(() => {
 	if (isNewWorkflow.value) return readOnly.value;
-	return readOnly.value || props.isArchived || !workflowPermissions.value.update;
+	return (
+		readOnly.value ||
+		props.isArchived ||
+		!workflowPermissions.value.update ||
+		isReadOnlyByTag.value
+	);
 });
 
 const currentFolderForBreadcrumbs = computed(() => {
