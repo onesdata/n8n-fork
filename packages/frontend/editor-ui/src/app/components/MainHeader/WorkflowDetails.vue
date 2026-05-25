@@ -42,6 +42,7 @@ import { useUIStore } from '@/app/stores/ui.store';
 import { useWorkflowsStore } from '@/app/stores/workflows.store';
 import { useWorkflowsListStore } from '@/app/stores/workflowsList.store';
 import { WorkflowDocumentStoreKey } from '@/app/constants/injectionKeys';
+import { useWorkflowUILockState } from '@/app/composables/useWorkflowUILockState';
 
 const WORKFLOW_NAME_BP_TO_WIDTH: { [key: string]: number } = {
 	XS: 150,
@@ -110,10 +111,17 @@ const readOnly = computed(
 	() => sourceControlStore.preferences.branchReadOnly || collaborationStore.shouldBeReadOnly,
 );
 
+const { isReadOnlyByTag } = useWorkflowUILockState();
+
 // For workflow name and tags editing: needs update permission and not archived
 const readOnlyActions = computed(() => {
 	if (isNewWorkflow.value) return readOnly.value;
-	return readOnly.value || props.isArchived || !workflowPermissions.value.update;
+	return (
+		readOnly.value ||
+		props.isArchived ||
+		!workflowPermissions.value.update ||
+		isReadOnlyByTag.value
+	);
 });
 
 const workflowTagIds = computed(() => props.tags);
