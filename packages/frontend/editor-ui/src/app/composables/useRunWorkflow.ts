@@ -61,6 +61,7 @@ import { injectWorkflowState, type WorkflowState } from '@/app/composables/useWo
 import { useDocumentTitle } from './useDocumentTitle';
 import { useChat } from '@n8n/chat/composables';
 import type { WorkflowObjectAccessors } from '../types';
+import { useWorkflowUILockState } from '@/app/composables/useWorkflowUILockState';
 
 export function useRunWorkflow(useRunWorkflowOpts: {
 	router: ReturnType<typeof useRouter>;
@@ -94,6 +95,7 @@ export function useRunWorkflow(useRunWorkflowOpts: {
 	const { dirtinessByName } = useNodeDirtiness();
 	const { startChat } = useCanvasOperations();
 	const chatStore = useChat();
+	const { isNonExecutableByTag } = useWorkflowUILockState();
 
 	function sortNodesByYPosition(nodes: string[]) {
 		return [...nodes].sort((a, b) => {
@@ -151,6 +153,10 @@ export function useRunWorkflow(useRunWorkflowOpts: {
 		sessionId?: string;
 	}): Promise<IExecutionPushResponse | undefined> {
 		if (workflowExecutionState.value.activeExecutionId) {
+			return;
+		}
+
+		if (isNonExecutableByTag.value) {
 			return;
 		}
 
