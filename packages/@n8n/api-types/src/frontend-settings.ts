@@ -167,6 +167,10 @@ export interface FrontendSettings {
 	};
 	workflowTagsDisabled: boolean;
 	workflowsAutosaveDisabled: boolean;
+	workflowUILockTags: {
+		readOnly: string;
+		noExecute: string;
+	};
 	logLevel: LogLevel;
 	hiringBannerEnabled: boolean;
 	previewMode: boolean;
