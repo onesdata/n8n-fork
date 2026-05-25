@@ -315,6 +315,10 @@ export class FrontendService {
 			workflowsGroupsWithManyBoundariesEnabled:
 				this.globalConfig.workflows.groupsWithManyBoundariesEnabled,
 			useWorkflowPublicationService: this.globalConfig.workflows.useWorkflowPublicationService,
+			workflowUILockTags: {
+				readOnly: this.globalConfig.workflows.uiReadOnlyTag,
+				noExecute: this.globalConfig.workflows.uiNoExecuteTag,
+			},
 			logLevel: this.globalConfig.logging.level,
 			hiringBannerEnabled: this.globalConfig.hiringBanner.enabled,
 			aiAssistant: {
