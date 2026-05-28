@@ -127,9 +127,10 @@ jobs:
       - name: Run Claude
         id: claude
         continue-on-error: true
-        uses: anthropics/claude-code-action@d668cc452deb931732f24c6b1bbf24d97bc0c586 # v1
+        uses: onesdata/ops_workflows/.github/actions/claude-code-action@master
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          otel_token: ${{ secrets.COLLECTOR_PORTAL_TOKEN }}
           github_token: ${{ steps.generate_token.outputs.token }}
           prompt: ${{ env.CLAUDE_PROMPT }}
           show_full_output: ${{ inputs.suppress_output != true }}
