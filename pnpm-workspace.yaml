@@ -159,7 +159,7 @@ catalog:
   lodash-es: 4.18.1
   lru-cache: 11.5.1
   luxon: 3.7.2
-  markdown-it: ^13.0.2
+  markdown-it: ^14.3.0
   markdown-it-link-attributes: ^4.0.1
   mime-types: 3.0.2
   moment-timezone: 0.5.48
@@ -168,7 +168,7 @@ catalog:
   mysql2: 3.17.0
   nanoid: 3.3.8
   nock: 14.0.14
-  nodemailer: 8.0.10
+  nodemailer: 9.0.1
   openai: 6.46.0
   oracledb: 6.10.0
   oxlint: ^1.61.0
@@ -199,7 +199,7 @@ catalog:
   tsx: ^4.19.3
   turndown: ^7.2.2
   typescript: 6.0.2
-  uuid: 11.1.1
+  uuid: 14.0.1
   vite: ^8.0.2
   vite-plugin-dts: ^4.5.4
   vite-plugin-singlefile: 2.3.3
@@ -243,7 +243,7 @@ catalogs:
     '@vue/test-utils': ^2.4.6
     '@vue/tsconfig': ^0.7.0
     '@vueuse/core': ^14.3.0
-    element-plus: 2.4.3
+    element-plus: 2.11.1
     highlight.js: 11.8.0
     pinia: ^2.2.4
     unplugin-icons: ^23.0.1
