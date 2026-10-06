@@ -19,3 +19,19 @@ index 1642d3fb35cbd64b553291660fc63bae2e7f2ef5..3301e3fbc7296f545b65331dad1f12c8
            removeListeners();
          }
        };
+diff --git a/lib/commands/moveStalledJobsToWait-7.lua b/lib/commands/moveStalledJobsToWait-7.lua
+index 737795e..e4cac22 100644
+--- a/lib/commands/moveStalledJobsToWait-7.lua
++++ b/lib/commands/moveStalledJobsToWait-7.lua
+@@ -82,6 +82,11 @@ if(#stalling > 0) then
+           local jobAttributes = rcall("HMGET", jobKey, "opts", "deid")
+           local opts = cjson.decode(jobAttributes[1])
+           local removeOnFailType = type(opts["removeOnFail"])
++          -- A job that stalls before moveToActive (e.g. the worker died right after
++          -- BRPOPLPUSH) is still in the priority set. n8n runs with maxStalledCount: 0,
++          -- so it lands here. Leaving it there breaks addJobWithPriority positioning
++          -- and the wait list stops being FIFO.
++          rcall("ZREM", ARGV[2] .. "priority", jobId)
+           rcall("ZADD", KEYS[4], ARGV[3], jobId)
+           rcall("HMSET", jobKey, "failedReason", "job stalled more than allowable limit",
+             "finishedOn", ARGV[3])
