@@ -15,14 +15,15 @@ const props = defineProps<
 				collapsed: boolean;
 		  }
 	) & {
-		releaseChannel: 'stable' | 'beta' | 'nightly' | 'dev';
-	  aitProjectStage: 'prod' | 'staging' | 'test' | 'local';
+		releaseChannel?: 'stable' | 'beta' | 'nightly' | 'dev' | 'rc';
+		aitProjectStage?: 'prod' | 'staging' | 'test' | 'local';
 	}
 >();
 
 const { size, releaseChannel, aitProjectStage } = props;
 
 const showAitProjectStageTag = computed(() => {
+	if (!aitProjectStage) return false;
 	if (size === 'large') return true;
 	return !props.collapsed;
 });
@@ -46,8 +47,6 @@ const containerClasses = computed(() => {
 
 const svg = useTemplateRef<{ $el: Element }>('logo');
 onMounted(() => {
-	if (!('createObjectURL' in URL)) return;
-
 	const logoEl = svg.value!.$el;
 
 	let stageColor;
@@ -67,10 +66,10 @@ onMounted(() => {
 			break;
 	}
 
-	if (!stageColor && releaseChannel !== 'dev') return;
+	if (stageColor) logoEl.style.setProperty('--logo-icon-fill', stageColor);
+	if ((!stageColor && releaseChannel !== 'dev') || !('createObjectURL' in URL)) return;
 
 	// The logo uses a CSS variable. The favicon needs a fixed SVG color.
-	if (stageColor) logoEl.style.setProperty('--logo-icon-fill', stageColor);
 	const faviconColor = stageColor ?? '#898989';
 	const faviconSvg = logoEl.outerHTML.replace('>', `><style>path { fill: ${faviconColor}; }</style>`);
 	const blob = new Blob([faviconSvg], { type: 'image/svg+xml' });
