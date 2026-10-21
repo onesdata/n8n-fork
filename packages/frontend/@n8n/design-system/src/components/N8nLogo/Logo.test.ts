@@ -36,6 +36,31 @@ describe('Logo', () => {
 		expect(useFavicon).toHaveBeenCalledWith('blob:dev-logo');
 	});
 
+	it('colors the logo and favicon for a project stage', () => {
+		const createObjectURL = vi.fn(() => 'blob:test-logo');
+		const blob = vi.fn();
+		vi.stubGlobal('URL', { createObjectURL });
+		vi.stubGlobal('Blob', blob);
+		const { container, getByText } = render(Logo, {
+			props: { size: 'large', releaseChannel: 'stable', aitProjectStage: 'test' },
+		});
+		expect(container.querySelector('svg')?.style.getPropertyValue('--logo-icon-fill')).toBe('#49d204');
+		expect(getByText('test')).toBeInTheDocument();
+		expect(blob).toHaveBeenCalledWith([expect.stringContaining('path { fill: #49d204; }')], {
+			type: 'image/svg+xml',
+		});
+		expect(useFavicon).toHaveBeenCalledWith('blob:test-logo');
+	});
+
+	it('colors a project stage even without favicon support', () => {
+		vi.stubGlobal('URL', {});
+		const { container } = render(Logo, {
+			props: { size: 'large', releaseChannel: 'stable', aitProjectStage: 'local' },
+		});
+		expect(container.querySelector('svg')?.style.getPropertyValue('--logo-icon-fill')).toBe('#0015ff');
+		expect(useFavicon).not.toHaveBeenCalled();
+	});
+
 	it('skips the dev favicon without object URL support', () => {
 		vi.stubGlobal('URL', {});
 		render(Logo, { props: { size: 'large', releaseChannel: 'dev' } });
