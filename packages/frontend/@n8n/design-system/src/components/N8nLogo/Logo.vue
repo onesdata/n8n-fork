@@ -45,7 +45,7 @@ const containerClasses = computed(() => {
 	];
 });
 
-const svg = useTemplateRef<{ $el: Element }>('logo');
+const svg = useTemplateRef<{ $el: SVGSVGElement }>('logo');
 onMounted(() => {
 	const logoEl = svg.value!.$el;
 
