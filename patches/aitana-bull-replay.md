@@ -12,3 +12,6 @@ This note gives the prerequisite commit a distinct patch ID. The rebuild can
 then replay the prerequisite before the cleanup, even when the release tag
 already contains it. The release rebase keeps the note and applies the cleanup
 to the same upstream patch.
+
+Keep the priority cleanup in both the Lua source and the generated script in
+`lib/scripts`. Bull loads the generated script from the published package.
