@@ -164,3 +164,14 @@ index 737795e..e4cac22 100644
            rcall("ZADD", KEYS[4], ARGV[3], jobId)
            rcall("HMSET", jobKey, "failedReason", "job stalled more than allowable limit",
              "finishedOn", ARGV[3])
+diff --git a/lib/scripts/moveStalledJobsToWait-7.js b/lib/scripts/moveStalledJobsToWait-7.js
+--- a/lib/scripts/moveStalledJobsToWait-7.js
++++ b/lib/scripts/moveStalledJobsToWait-7.js
+@@ -103,6 +103,7 @@
+           local jobAttributes = rcall("HMGET", jobKey, "opts", "deid")
+           local opts = cjson.decode(jobAttributes[1])
+           local removeOnFailType = type(opts["removeOnFail"])
++          rcall("ZREM", ARGV[2] .. "priority", jobId)
+           rcall("ZADD", KEYS[4], ARGV[3], jobId)
+           rcall("HMSET", jobKey, "failedReason", "job stalled more than allowable limit",
+             "finishedOn", ARGV[3])
